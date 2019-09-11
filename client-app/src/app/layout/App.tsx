@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Header, Icon, Container } from 'semantic-ui-react'
-import axios from 'axios';
 import { IActivity } from '../models/activity';
 import NavBar from '../../features/nav/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
+import agent from '../api/agent';
 
 const App = () => {
 
@@ -21,25 +21,29 @@ const App = () => {
     setEditMode(false)
   }
 
-  const handleCreateActivity = (activity: IActivity) => {
+  const handleCreateActivity = async (activity: IActivity) => {
+    await agent.Activities.create(activity)
     setActivities([...activities, activity])
     setSelectedActivity(activity)
     setEditMode(false)
   }
 
-  const handleEditActivity = (activity: IActivity) => {
+  const handleEditActivity = async (activity: IActivity) => {
+    await agent.Activities.update(activity)
     setActivities([...activities.filter(act => act.id !== activity.id), activity])
+    setSelectedActivity(activity)
+    setEditMode(false)
   }
 
-  const handleDeleteActivity = (id: string) => {
+  const handleDeleteActivity = async (id: string) => {
+    await agent.Activities.delete(id)
     setActivities([...activities.filter(act => act.id !== id)])
   }
 
   useEffect(() => {
-    axios
-      .get<IActivity[]>('http://localhost:5000/api/activities')
+    agent.Activities.list()
       .then(response => {
-        let activities = response.data.reduce((accum: IActivity[], activity) => {
+        let activities = response.reduce((accum: IActivity[], activity) => {
           activity.startDate = activity.startDate.split('.')[0]
           activity.endDate = activity.endDate.split('.')[0]
           accum.push(activity)
