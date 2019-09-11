@@ -1,0 +1,10 @@
+export interface IActivity {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    startDate: Date;
+    endDate: Date;
+    city: string;
+    venue: string;
+}
