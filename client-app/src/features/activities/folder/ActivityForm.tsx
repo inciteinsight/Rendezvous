@@ -76,13 +76,13 @@ const ActivityForm: React.FC<IProps> = ({
                     value={category}/>
                 <Form.Input
                     onChange={handleChange}
-                    type='date'
+                    type='datetime-local'
                     name='startDate'
                     placeholder='Start Date'
                     value={startDate}/>
                 <Form.Input
                     onChange={handleChange}
-                    type='date'
+                    type='datetime-local'
                     name='endDate'
                     placeholder='End Date'
                     value={endDate}/>
