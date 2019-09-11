@@ -24,7 +24,7 @@ namespace API.Controllers
             return await _mediator.Send(new List.Query());
         }
 
-        [HttpGet("{activityId}")] // Must be the same name
+        [HttpGet("{activityId}")]
         public async Task<ActionResult<Activity>> Details(Guid activityId)
         {  
             return await _mediator.Send(new Details.Query{Id = activityId});
@@ -34,6 +34,19 @@ namespace API.Controllers
         public async Task<ActionResult<Unit>> Create(Create.Command command)
         {
             return await _mediator.Send(command);
+        }
+
+        [HttpPut("{activityId}")]
+        public async Task<ActionResult<Unit>> Edit(Guid activityId, Edit.Command command)
+        {
+            command.Id = activityId;
+            return await _mediator.Send(command);
+        }
+
+        [HttpDelete("{activityId}")]
+        public async Task<ActionResult<Unit>> Delete(Guid activityId)
+        {
+            return await _mediator.Send(new Delete.Command{Id = activityId});
         }
     }
 }
