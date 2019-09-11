@@ -3,8 +3,8 @@ export interface IActivity {
     title: string;
     description: string;
     category: string;
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     city: string;
     venue: string;
 }
