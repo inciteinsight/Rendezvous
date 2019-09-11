@@ -1,15 +1,19 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, SyntheticEvent } from 'react';
 import { Header, Icon, Container } from 'semantic-ui-react'
 import { IActivity } from '../models/activity';
 import NavBar from '../../features/nav/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import agent from '../api/agent';
+import Loading from './Loading';
 
 const App = () => {
 
   const [activities, setActivities] = useState<IActivity[]>([])
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(null)
   const [editMode, setEditMode] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+  const [target, setTarget] = useState('')
   
   const handleOpenCreateForm = () => {
     setSelectedActivity(null)
@@ -22,37 +26,49 @@ const App = () => {
   }
 
   const handleCreateActivity = async (activity: IActivity) => {
+    setSubmitting(true)
     await agent.Activities.create(activity)
     setActivities([...activities, activity])
     setSelectedActivity(activity)
-    setEditMode(false)
+    await setEditMode(false)
+    setSubmitting(false)
   }
 
   const handleEditActivity = async (activity: IActivity) => {
+    setSubmitting(true)
     await agent.Activities.update(activity)
     setActivities([...activities.filter(act => act.id !== activity.id), activity])
     setSelectedActivity(activity)
-    setEditMode(false)
+    await setEditMode(false)
+    setSubmitting(false)
   }
 
-  const handleDeleteActivity = async (id: string) => {
+  const handleDeleteActivity = async (event: SyntheticEvent<HTMLButtonElement>, id: string) => {
+    setSubmitting(true)
+    setTarget(event.currentTarget.name)
     await agent.Activities.delete(id)
     setActivities([...activities.filter(act => act.id !== id)])
+    setSubmitting(false)
   }
 
   useEffect(() => {
     agent.Activities.list()
-      .then(response => {
+      .then(async response => {
         let activities = response.reduce((accum: IActivity[], activity) => {
           activity.startDate = activity.startDate.split('.')[0]
           activity.endDate = activity.endDate.split('.')[0]
           accum.push(activity)
           return accum
         },[])
-        setActivities(activities)
-      }
+        await setActivities(activities)
+        setLoading(false)
+        }
       )
     }, [])
+
+  if(loading) {
+    return <Loading content='Loading Activities...' />
+  }
 
   return (
     <Fragment>
@@ -74,8 +90,9 @@ const App = () => {
           createActivity={handleCreateActivity}
           editActivity={handleEditActivity}
           deleteActivity={handleDeleteActivity}
+          submitting={submitting}
+          target={target}
         />
-
       </Container>
     </Fragment>
   )
