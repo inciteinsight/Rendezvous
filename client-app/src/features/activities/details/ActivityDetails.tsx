@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Card, Image, Button } from 'semantic-ui-react'
 import { IActivity } from '../../../app/models/activity'
+import { observer } from 'mobx-react-lite'
+import ActivityStore from '../../../app/stores/activityStore'
 
 interface IProps {
-    activity: IActivity
     setSelectedActivity: (activity: IActivity | null) => void
     setEditMode: (editMode: boolean) => void
 }
 
-const ActivityDetails: React.FC<IProps>= ({activity, setSelectedActivity, setEditMode}) => {
-    const {title, startDate, endDate, description, category} = activity
+const ActivityDetails: React.FC<IProps>= ({setSelectedActivity, setEditMode}) => {
+    const activityStore = useContext(ActivityStore)
+    const {selectedActivity: activity} = activityStore
+    const {title, startDate, endDate, description, category} = activity!
     return (
         <Card fluid>
             <Image src={`/assets/categoryImages/${category}.jpg`} wrapped ui={false} />
@@ -38,4 +41,4 @@ const ActivityDetails: React.FC<IProps>= ({activity, setSelectedActivity, setEdi
     )
 }
 
-export default ActivityDetails
+export default observer(ActivityDetails)

@@ -1,38 +1,22 @@
-import React, { useState, useEffect, Fragment, SyntheticEvent } from 'react';
+import React, { useState, useEffect, Fragment, SyntheticEvent, useContext } from 'react';
 import { Header, Icon, Container } from 'semantic-ui-react'
 import { IActivity } from '../models/activity';
 import NavBar from '../../features/nav/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import agent from '../api/agent';
 import Loading from './Loading';
+import ActivityStore from '../stores/activityStore';
+import {observer} from 'mobx-react-lite';
 
 const App = () => {
+
+  const activityStore = useContext(ActivityStore)
 
   const [activities, setActivities] = useState<IActivity[]>([])
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(null)
   const [editMode, setEditMode] = useState(false)
-  const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [target, setTarget] = useState('')
-  
-  const handleOpenCreateForm = () => {
-    setSelectedActivity(null)
-    setEditMode(true)
-  }
-
-  const handleSelectActivity = (id: string) => {
-    setSelectedActivity(activities.filter(activity => activity.id === id)[0])
-    setEditMode(false)
-  }
-
-  const handleCreateActivity = async (activity: IActivity) => {
-    setSubmitting(true)
-    await agent.Activities.create(activity)
-    setActivities([...activities, activity])
-    setSelectedActivity(activity)
-    await setEditMode(false)
-    setSubmitting(false)
-  }
 
   const handleEditActivity = async (activity: IActivity) => {
     setSubmitting(true)
@@ -52,27 +36,16 @@ const App = () => {
   }
 
   useEffect(() => {
-    agent.Activities.list()
-      .then(async response => {
-        let activities = response.reduce((accum: IActivity[], activity) => {
-          activity.startDate = activity.startDate.split('.')[0]
-          activity.endDate = activity.endDate.split('.')[0]
-          accum.push(activity)
-          return accum
-        },[])
-        await setActivities(activities)
-        setLoading(false)
-        }
-      )
-    }, [])
+    activityStore.loadActivities()
+  }, [activityStore])
 
-  if(loading) {
+  if(activityStore.loadingInitial) {
     return <Loading content='Loading Activities...' />
   }
 
   return (
     <Fragment>
-      <NavBar openCreateForm={handleOpenCreateForm}/>
+      <NavBar/>
       <Container style={{marginTop: '5em'}}>
         <Header as='h2'>
           <Icon name='users' />
@@ -81,13 +54,8 @@ const App = () => {
 
         <h3>By Roger Lester Palabasan</h3>
         <ActivityDashboard
-          activities={activities}
-          selectActivity={handleSelectActivity}
-          selectedActivity={selectedActivity}
           setSelectedActivity={setSelectedActivity}
-          editMode={editMode}
           setEditMode={setEditMode}
-          createActivity={handleCreateActivity}
           editActivity={handleEditActivity}
           deleteActivity={handleDeleteActivity}
           submitting={submitting}
@@ -98,4 +66,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default observer(App);
