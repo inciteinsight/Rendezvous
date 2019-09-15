@@ -34,7 +34,6 @@ class ActivityStore {
             this.loadingInitial = false
             console.error(error)
         }
-        
     }
     
     @action createActivity = async (activity: IActivity) => {
