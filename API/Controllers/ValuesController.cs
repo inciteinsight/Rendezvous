@@ -23,6 +23,7 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<Value>>> Get()
         {
            List<Value> values = await _context.Values.ToListAsync();
+
            return Ok(values);
         }
 

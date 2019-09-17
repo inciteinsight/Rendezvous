@@ -6,6 +6,7 @@ import agent from '../api/agent';
 class ActivityStore {
 
     // observables
+    @observable activityRegistry = new Map()
     @observable activities: IActivity[] = []
     @observable selectedActivity: IActivity | undefined
     @observable loadingInitial = false
