@@ -1,10 +1,14 @@
 import React, { useEffect, Fragment, useContext } from 'react';
-import { Header, Icon, Container } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 import NavBar from '../../features/nav/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import Loading from './Loading';
 import ActivityStore from '../stores/activityStore';
 import { observer } from 'mobx-react-lite';
+import { Route } from 'react-router-dom';
+import HomePage from '../../features/home/HomePage';
+import ActivityForm from '../../features/activities/form/ActivityForm';
+import ActivityDetails from '../../features/activities/details/ActivityDetails';
 
 const App = () => {
 
@@ -22,13 +26,10 @@ const App = () => {
     <Fragment>
       <NavBar/>
       <Container style={{marginTop: '5em'}}>
-        <Header as='h2'>
-          <Icon name='users' />
-          <Header.Content>React ASP Net Boilerplate</Header.Content>
-        </Header>
-
-        <h3>By Roger Lester Palabasan</h3>
-        <ActivityDashboard/>
+        <Route exact path='/' component={HomePage}/>
+        <Route path='/activities' component={ActivityDashboard}/>
+        <Route path='/activities/:ActivityId' component={ActivityDetails}/>
+        <Route path='/createActivity' component={ActivityForm}/>
       </Container>
     </Fragment>
   )

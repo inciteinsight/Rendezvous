@@ -6,7 +6,7 @@ import ActivityStore from '../../../app/stores/activityStore'
 const ActivityDetails: React.FC = () => {
     const activityStore = useContext(ActivityStore)
     const {
-        selectedActivity: activity,
+        activity,
         openEditForm,
         cancelSelectedActivity
     } = activityStore
