@@ -14,8 +14,6 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, hi
     const activityStore = useContext(ActivityStore)
     const {
         activity,
-        openEditForm,
-        cancelSelectedActivity,
         loadActivity,
         loadingInitial
     } = activityStore
@@ -48,8 +46,7 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, hi
                         <Button basic
                             as={Link} to={`/manage/${id}`}
                             color='blue'
-                            content='Edit'
-                            onClick={() => openEditForm(id)}/>
+                            content='Edit' />
                         <Button basic
                             color='blue'
                             content='Cancel'

@@ -9,10 +9,8 @@ class ActivityStore {
 
     // observables
     @observable activityRegistry = new Map()
-    @observable activities: IActivity[] = []
     @observable activity: IActivity | null = null
     @observable loadingInitial = false
-    @observable editMode = false
     @observable submitting = false
     @observable target =  ''
 
@@ -23,11 +21,6 @@ class ActivityStore {
     )}
 
     // actions
-    @action selectActivity = (id: string) => {
-        this.activity = this.activityRegistry.get(id)
-        this.editMode = false;
-    }
-
     @action loadActivity = async (id: string) => {
         let activity = this.activityRegistry.get(id)
         if (activity) {
@@ -76,7 +69,6 @@ class ActivityStore {
             await agent.Activities.create(activity)
             runInAction('creating activity', () => {
                 this.activityRegistry.set(activity.id, activity)
-                this.editMode = false
                 this.submitting = false
             })
         }   catch (error) {
@@ -94,7 +86,6 @@ class ActivityStore {
             runInAction('updating activity', () => {
                 this.activityRegistry.set(activity.id, activity)
                 this.activity = activity
-                this.editMode = false
                 this.submitting = false
             })
         }   catch (error) {
@@ -103,24 +94,6 @@ class ActivityStore {
             })
             console.error(error)
         }        
-    }
-
-    @action openCreateForm = () => {
-        this.editMode = true
-        this.activity = null
-    }
-
-    @action openEditForm = (id: string) => {
-        this.activity = this.activityRegistry.get(id)
-        this.editMode = true
-    }
-
-    @action cancelSelectedActivity = () => {
-        this.activity = null
-    }
-
-    @action cancelFormOpen = () => {
-        this.editMode = false
     }
 
     @action clearActivity = () => {

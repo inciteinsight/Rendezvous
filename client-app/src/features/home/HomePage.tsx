@@ -1,5 +1,6 @@
 import React from 'react'
 import { Header, Icon, Container } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 const HomePage = () => {
     return (
@@ -9,6 +10,7 @@ const HomePage = () => {
                 <Header.Content>React ASP Net Boilerplate</Header.Content>
             </Header>
             <h3>By Roger Lester Palabasan</h3>
+            <h4>Go to <Link to='/activities'>Activities</Link></h4>
         </Container>
     )
 }

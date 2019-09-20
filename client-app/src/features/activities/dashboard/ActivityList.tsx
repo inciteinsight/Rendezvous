@@ -8,8 +8,7 @@ const ActivityList: React.FC = () => {
 
     const activityStore = useContext(ActivityStore)
     const {
-        activitiesByStartDate, 
-        selectActivity,
+        activitiesByStartDate,
         deleteActivity,
         submitting,
         target
