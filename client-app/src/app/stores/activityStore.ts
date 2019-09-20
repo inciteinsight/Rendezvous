@@ -7,20 +7,27 @@ configure({enforceActions: "always"})
 
 class ActivityStore {
 
-    // observables
     @observable activityRegistry = new Map()
     @observable activity: IActivity | null = null
     @observable loadingInitial = false
     @observable submitting = false
     @observable target =  ''
 
-    // computed - remember the get
     @computed get activitiesByStartDate() {
-        return Array.from(this.activityRegistry.values()).sort(
-            (a, b) => Date.parse(a.startDate) - Date.parse(b.startDate)
-    )}
+        return this.groupActivitiesByStartDate(Array.from(this.activityRegistry.values()))
+    }
 
-    // actions
+    groupActivitiesByStartDate(activities: IActivity[]) {
+        const sortedActivities = activities.sort(
+            (a, b) => Date.parse(a.startDate) - Date.parse(b.startDate)
+        )
+        return Object.entries(sortedActivities.reduce((activities, activity) => {
+            const startDate = activity.startDate.split('T')[0]
+            activities[startDate] = activities[startDate] ? [...activities[startDate], activity] : [activity]
+            return activities
+        }, {} as {[key: string]: IActivity[]}))
+    }
+
     @action loadActivity = async (id: string) => {
         let activity = this.activityRegistry.get(id)
         if (activity) {

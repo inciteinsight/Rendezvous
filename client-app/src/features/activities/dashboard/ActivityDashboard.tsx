@@ -10,7 +10,7 @@ const ActivityDashboard: React.FC = () => {
         const activityStore = useContext(ActivityStore)
 
         useEffect(() => {
-        activityStore.loadActivities()
+            activityStore.loadActivities()
         }, [activityStore])
     
         if(activityStore.loadingInitial) {
