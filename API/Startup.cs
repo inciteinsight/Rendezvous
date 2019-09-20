@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Application.Activities;
 using Persistence;
 using MediatR;
+using FluentValidation.AspNetCore;
 
 namespace API
 {
@@ -41,7 +42,9 @@ namespace API
                 });
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Create>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

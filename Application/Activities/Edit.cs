@@ -4,30 +4,45 @@ using System.Threading.Tasks;
 using MediatR;
 using Domain;
 using Persistence;
+using FluentValidation;
 
 namespace Application.Activities
 {
     public class Edit
     {
-            public class Command : IRequest
-            {
-                public Guid Id { get; set; }
-                public string Title { get; set; }
-                public string Description { get; set; }
-                public string Category { get; set; }
-                public DateTime? StartDate { get; set; }
-                public DateTime? EndDate { get; set; }
-                public string City { get; set; }
-                public string Venue { get; set; }
-            }
+        public class Command : IRequest
+        {
+            public Guid Id { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string Category { get; set; }
+            public DateTime? StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public string City { get; set; }
+            public string Venue { get; set; }
+        }
 
-            public class Handler : IRequestHandler<Command>
+        public class CommendValidator : AbstractValidator<Command>
+        {
+            public CommendValidator()
             {
-                private readonly DataContext _context;
-                public Handler(DataContext context)
-                {
-                    this._context = context;
-                }
+                RuleFor(x => x.Title).NotEmpty();
+                RuleFor(x => x.Description).NotEmpty();
+                RuleFor(x => x.Category).NotEmpty();
+                RuleFor(x => x.StartDate).NotEmpty();
+                RuleFor(x => x.EndDate).NotEmpty();
+                RuleFor(x => x.City).NotEmpty();
+                RuleFor(x => x.Venue).NotEmpty();
+            }
+        }
+
+        public class Handler : IRequestHandler<Command>
+        {
+            private readonly DataContext _context;
+            public Handler(DataContext context)
+            {
+                this._context = context;
+            }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 Activity activity = await _context.Activities.FindAsync(request.Id);
