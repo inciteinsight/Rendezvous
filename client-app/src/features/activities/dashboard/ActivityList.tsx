@@ -27,8 +27,8 @@ const ActivityList: React.FC = () => {
                                 <Item.Meta>{startDate}</Item.Meta>
                                 <Item.Meta>{endDate}</Item.Meta>
                                 <Item.Description>
-                                <div>{description}</div>
-                                <div>{city}, {venue}</div>
+                                    <div>{description}</div>
+                                    <div>{city}, {venue}</div>
                                 </Item.Description>
                                 <Item.Extra>
                                     <Button

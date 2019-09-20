@@ -10,11 +10,11 @@ class ActivityStore {
     // observables
     @observable activityRegistry = new Map()
     @observable activities: IActivity[] = []
-    @observable activity: IActivity | undefined
+    @observable activity: IActivity | null = null
     @observable loadingInitial = false
     @observable editMode = false
     @observable submitting = false
-    @observable target =  '';
+    @observable target =  ''
 
     // computed - remember the get
     @computed get activitiesByStartDate() {
@@ -107,7 +107,7 @@ class ActivityStore {
 
     @action openCreateForm = () => {
         this.editMode = true
-        this.activity = undefined
+        this.activity = null
     }
 
     @action openEditForm = (id: string) => {
@@ -116,11 +116,15 @@ class ActivityStore {
     }
 
     @action cancelSelectedActivity = () => {
-        this.activity = undefined
+        this.activity = null
     }
 
     @action cancelFormOpen = () => {
         this.editMode = false
+    }
+
+    @action clearActivity = () => {
+        this.activity = null
     }
 
     @action deleteActivity = async (event: SyntheticEvent<HTMLButtonElement>, id: string) => {
