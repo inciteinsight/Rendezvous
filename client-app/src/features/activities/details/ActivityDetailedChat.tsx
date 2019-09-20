@@ -25,7 +25,7 @@ const ActivityDetailedChat = () => {
             <Segment>
                 <Comment.Group>
                 {sampleUsers.map(user => (
-                    <Comment>
+                    <Comment key={user.name}>
                         <Comment.Avatar src={`/assets/sampleUsers/${user.name}.jpg`}/>
                         <Comment.Content>
                             <Comment.Author as='a'>{user.name}</Comment.Author>

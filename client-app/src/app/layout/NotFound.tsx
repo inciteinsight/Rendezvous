@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const NotFound = () => {
     return (
         <Segment placeholder>
-            <Header>
+            <Header icon>
                 <Icon name='search'/>
                 Oops - we've looked everywhere but couldn't find this.
             </Header>
