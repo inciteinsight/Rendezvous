@@ -11,11 +11,11 @@ const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
             <Segment>
                 <Item.Group>
                     <Item>
-                    <Item.Image size='tiny' circular src='/assets/user.png' />
+                    <Item.Image size='small' src={`/assets/categoryImages/${category}.jpg`} />
                         <Item.Content>
                             <Item.Header as='a'>{title}</Item.Header>
                             <Item.Description>
-                                Hosted by EJ
+                                Hosted by Jan Czarina
                             </Item.Description>
                         </Item.Content>
                     </Item>
@@ -25,7 +25,7 @@ const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
                 <Icon name='hourglass start' /> {startDate}
                 {/* <Icon name='hourglass end' /> {endDate} */}
                 <Icon name='marker' /> {venue}, {city}
-                <Icon name='table tennis' /> {category}
+                <Icon name='users' /> {category}
             </Segment>
             <Segment secondary>
                 Attendees will go here
