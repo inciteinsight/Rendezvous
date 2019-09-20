@@ -1,13 +1,15 @@
 import React, { Fragment } from 'react'
-import { Segment, Header, Comment } from 'semantic-ui-react'
+import { Segment, Header, Comment, Form, Button } from 'semantic-ui-react'
 
 const ActivityDetailedChat = () => {
     const sampleUsers = [
         {
-            name: 'AzuResolute'
+            name: 'AzuResolute',
+            text: 'I look forward to attending your event!'
         },
         {
-            name: 'Vixiie'
+            name: 'Vixiie',
+            text: 'Can\'t wait!'
         }
     ]
     return (
@@ -20,16 +22,32 @@ const ActivityDetailedChat = () => {
                 style={{ border: 'none'}}>
                 <Header>Chat about this event</Header>
             </Segment>
-            {sampleUsers.map(user => (
-                <Segment>
-                    <Comment.Group>
-                        <Comment.Avatar src={`assets/sampleUsers/${user.name}.jpg`}/>
+            <Segment>
+                <Comment.Group>
+                {sampleUsers.map(user => (
+                    <Comment>
+                        <Comment.Avatar src={`/assets/sampleUsers/${user.name}.jpg`}/>
                         <Comment.Content>
                             <Comment.Author as='a'>{user.name}</Comment.Author>
+                            <Comment.Metadata>
+                                <div>Today at 12:50PM</div>
+                            </Comment.Metadata>
+                            <Comment.Text>{user.text}</Comment.Text>
+                            <Comment.Actions>
+                                <Comment.Action>Reply</Comment.Action>
+                            </Comment.Actions>
                         </Comment.Content>
-                    </Comment.Group>
-                </Segment>
-            ))}
+                    </Comment>
+                ))}
+                <Form reply>
+                    <Form.TextArea />
+                    <Button primary
+                        content='Add Reply'
+                        labelPosition='left'
+                        icon='edit' />
+                </Form>
+                </Comment.Group>
+            </Segment>
         </Fragment>
     )
 }

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { IActivity } from '../../../app/models/activity'
 
 const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
-    const { id, title, startDate, endDate, description, city, venue, category} = activity
+    const { id, title, startDate, description, city, venue, category} = activity
     return (
         <Segment.Group>
             <Segment>

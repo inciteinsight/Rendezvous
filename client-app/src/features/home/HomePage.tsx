@@ -1,17 +1,22 @@
 import React from 'react'
-import { Header, Icon, Container } from 'semantic-ui-react'
+import { Header, Container, Segment, Image, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 const HomePage = () => {
     return (
-        <Container style={{marginTop: '4em'}}>
-            <Header as='h2'>
-                <Icon name='users' />
-                <Header.Content>React ASP Net Boilerplate</Header.Content>
-            </Header>
-            <h3>By Roger Lester Palabasan</h3>
-            <h4>Go to <Link to='/activities'>Activities</Link></h4>
-        </Container>
+        <Segment inverted textAlign='center' vertical className='home'>
+            <Container text>
+                <Header as='h1' inverted>
+                    <Image size='massive' src='/assets/logo.png' alt='logo' style={{marginBottom: 12}} />
+                    Rendezvous
+                </Header>
+                <Header as='h2' inverted content='Welcome to Rendezvous' />
+                <Header as='h4' inverted>By Roger Lester Palabasan</Header>
+                <Button as={Link} to='/activities' size='huge' inverted>
+                    Link to Activities
+                </Button>
+            </Container>
+        </Segment>
     )
 }
 

@@ -3,7 +3,7 @@ import { Segment, Grid, Icon } from 'semantic-ui-react'
 import { IActivity } from '../../../app/models/activity'
 
 const ActivityDetailedInfo: React.FC<{activity: IActivity}> = ({activity}) => {
-    const {title, startDate, description, venue, city} = activity!
+    const {startDate, description, venue, city} = activity!
     return (
         <Segment.Group>
             <Segment attached='top'>
