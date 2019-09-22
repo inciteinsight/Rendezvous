@@ -2,6 +2,7 @@ import React from 'react'
 import { Segment, Image, Item, Header, Button } from 'semantic-ui-react'
 import { IActivity } from '../../../app/models/activity'
 import { observer } from 'mobx-react-lite'
+import { Link } from 'react-router-dom'
 
 const activityImageStyle = {
     filter: 'brightness(30%)'
@@ -17,7 +18,7 @@ const activityImageTextStyle = {
 }
 
 const ActivityDetailedHeader: React.FC<{activity: IActivity}> = ({activity}) => {
-    const {title, startDate, category} = activity!
+    const {id, title, startDate, category} = activity!
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: 0}}>
@@ -42,7 +43,11 @@ const ActivityDetailedHeader: React.FC<{activity: IActivity}> = ({activity}) => 
             <Segment clearing attached='bottom'>
                 <Button color='teal'>Join Activity</Button>
                 <Button>Cancel Attendance</Button>
-                <Button color='orange' floated='right'>Manage Event</Button>
+                <Button
+                    as={Link} to={`/manage/${id}`}
+                    color='orange'
+                    floated='right'> Manage Event
+                    </Button>
             </Segment>
         </Segment.Group>
     )
