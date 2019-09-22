@@ -8,6 +8,8 @@ import { RouteComponentProps } from 'react-router'
 import {Form as FinalForm, Field} from 'react-final-form'
 import TextInput from '../../../app/utilities/form/TextInput'
 import TextAreaInput from '../../../app/utilities/form/TextAreaInput'
+import SelectInput from '../../../app/utilities/form/SelectInput'
+import {categoryOptions} from '../../../app/utilities/options/categoryOptions'
 
 interface DetailParams {
     activityId: string
@@ -101,9 +103,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                     component={TextAreaInput}/>
                                 <Field
                                     name='category'
+                                    options={categoryOptions}
                                     placeholder='Category'
                                     value={category}
-                                    component={TextInput}/>
+                                    component={SelectInput}/>
                                 <Field
                                     // type='datetime-local'
                                     name='startDate'
