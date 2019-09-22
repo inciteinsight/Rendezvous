@@ -10,6 +10,7 @@ import TextInput from '../../../app/utilities/form/TextInput'
 import TextAreaInput from '../../../app/utilities/form/TextAreaInput'
 import SelectInput from '../../../app/utilities/form/SelectInput'
 import {categoryOptions} from '../../../app/utilities/options/categoryOptions'
+import DateInput from '../../../app/utilities/form/DateInput'
 
 interface DetailParams {
     activityId: string
@@ -32,8 +33,8 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         title: '',
         category: '',
         description: '',
-        startDate: '',
-        endDate: '',
+        startDate: null,
+        endDate: null,
         city: '',
         venue: ''
     })
@@ -111,14 +112,14 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                     // type='datetime-local'
                                     name='startDate'
                                     placeholder='Start Date'
-                                    value={startDate}
-                                    component={TextInput}/>
+                                    value={startDate!}
+                                    component={DateInput}/>
                                 <Field
                                     // type='datetime-local'
                                     name='endDate'
                                     placeholder='End Date'
-                                    value={endDate}
-                                    component={TextInput}/>
+                                    value={endDate!}
+                                    component={DateInput}/>
                                 <Field
                                     name='city'
                                     placeholder='City'
