@@ -3,8 +3,13 @@ export interface IActivity {
     title: string;
     description: string;
     category: string;
-    startDate: Date | null;
-    endDate:  Date | null;
+    startDate: Date;
+    endDate:  Date;
     city: string;
     venue: string;
+}
+
+export interface IActivityFormValues extends Partial<IActivity> {
+    startTime?: Date;
+    endTime?: Date;
 }

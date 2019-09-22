@@ -1,6 +1,6 @@
 import React, {useState, FormEvent, useContext, useEffect} from 'react'
-import { Segment, Form, Button, Grid } from 'semantic-ui-react'
-import { IActivity } from '../../../app/models/activity'
+import { Segment, Form, Button, Grid, FormGroup } from 'semantic-ui-react'
+import { IActivityFormValues } from '../../../app/models/activity'
 import {v4 as uuid} from 'uuid'
 import ActivityStore from '../../../app/stores/activityStore'
 import { observer } from 'mobx-react-lite'
@@ -11,6 +11,7 @@ import TextAreaInput from '../../../app/utilities/form/TextAreaInput'
 import SelectInput from '../../../app/utilities/form/SelectInput'
 import {categoryOptions} from '../../../app/utilities/options/categoryOptions'
 import DateInput from '../../../app/utilities/form/DateInput'
+import { combineDateAndTime } from '../../../app/utilities/tools/tool'
 
 interface DetailParams {
     activityId: string
@@ -28,20 +29,22 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         activity: initialFormState
     } = activityStore
 
-    const [activity, setActivity] = useState<IActivity>({
-        id: '',
+    const [activity, setActivity] = useState<IActivityFormValues>({
+        id: undefined,
         title: '',
         category: '',
         description: '',
-        startDate: null,
-        endDate: null,
+        startDate: undefined,
+        endDate: undefined,
+        startTime: undefined,
+        endTime: undefined,
         city: '',
         venue: ''
     })
 
     useEffect(() => {
         const {activityId} = match.params
-        if(activityId && activity.id.length === 0) {
+        if(activityId && activity.id) {
             loadActivity(activityId).then(
                 () => initialFormState && setActivity(initialFormState)
             )
@@ -54,7 +57,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         clearActivity,
         match.params,
         initialFormState,
-        activity.id.length
+        activity.id
     ])
 
     // const handleSubmmit = () => {
@@ -75,7 +78,12 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
     // }
 
     const handleFinalFormSubmit = (values: any) => {
-        console.log(values)
+        const startDateAndTime = combineDateAndTime(values.startDate, values.startTime)
+        const endDateAndTime = combineDateAndTime(values.endDate, values.endTime)
+        const {startDate, startTime, ...activity} = values
+        activity.startDate = startDateAndTime
+        activity.endDate = endDateAndTime
+        console.log(activity)
     }
 
     const handleChange = (evt: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -108,18 +116,34 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                     placeholder='Category'
                                     value={category}
                                     component={SelectInput}/>
-                                <Field
-                                    // type='datetime-local'
-                                    name='startDate'
-                                    placeholder='Start Date'
-                                    value={startDate!}
-                                    component={DateInput}/>
-                                <Field
-                                    // type='datetime-local'
-                                    name='endDate'
-                                    placeholder='End Date'
-                                    value={endDate!}
-                                    component={DateInput}/>
+                                <FormGroup widths='equal'>
+                                    <Field
+                                        name='startDate'
+                                        date={true}
+                                        placeholder='Start Day'
+                                        value={startDate}
+                                        component={DateInput}/>
+                                    <Field
+                                        name='startTime'
+                                        time={true}
+                                        placeholder='Start Time'
+                                        value={startDate}
+                                        component={DateInput}/>
+                                </FormGroup>
+                                <FormGroup widths='equal'>
+                                    <Field
+                                        name='endDate'
+                                        date={true}
+                                        placeholder='End Day'
+                                        value={endDate}
+                                        component={DateInput}/>
+                                    <Field
+                                        name='endTime'
+                                        time={true}
+                                        placeholder='End Time'
+                                        value={endDate}
+                                        component={DateInput}/>
+                                </FormGroup>
                                 <Field
                                     name='city'
                                     placeholder='City'

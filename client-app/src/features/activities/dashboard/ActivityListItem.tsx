@@ -23,7 +23,7 @@ const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
                 </Item.Group>
             </Segment>
             <Segment>
-                <Icon name='hourglass start' /> {format(startDate!,'h:mm a')}
+                <Icon name='hourglass start' /> {format(startDate,'h:mm a')}
                 {/* <Icon name='hourglass end' /> {endDate} */}
                 <Icon name='marker' /> {venue}, {city}
                 <Icon name='users' /> {category}

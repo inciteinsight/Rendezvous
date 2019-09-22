@@ -19,10 +19,10 @@ class ActivityStore {
 
     groupActivitiesByStartDate(activities: IActivity[]) {
         const sortedActivities = activities.sort(
-            (a, b) => a.startDate!.getTime() - b.startDate!.getTime()
+            (a, b) => a.startDate.getTime() - b.startDate.getTime()
         )
         return Object.entries(sortedActivities.reduce((activities, activity) => {
-            const startDate = activity.startDate!.toISOString().split('T')[0]
+            const startDate = activity.startDate.toISOString().split('T')[0]
             activities[startDate] = activities[startDate] ? [...activities[startDate], activity] : [activity]
             return activities
         }, {} as {[key: string]: IActivity[]}))
@@ -55,8 +55,8 @@ class ActivityStore {
             const activities = await agent.Activities.list()
             runInAction('loading activities', () => {
                     activities.forEach((activity) => {
-                    activity.startDate = new Date(activity.startDate!)
-                    activity.endDate = new Date(activity.endDate!)
+                    activity.startDate = new Date(activity.startDate)
+                    activity.endDate = new Date(activity.endDate)
                     this.activityRegistry.set(activity.id, activity)
                 })
                 this.loadingInitial = false

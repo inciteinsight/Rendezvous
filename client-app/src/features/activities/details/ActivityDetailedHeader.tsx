@@ -32,7 +32,7 @@ const ActivityDetailedHeader: React.FC<{activity: IActivity}> = ({activity}) => 
                                     size='huge'
                                     content={title}
                                     style={{ color: 'white' }} />
-                                <p>{format(startDate!,'eeee MMMM do yyyy')}</p>
+                                <p>{format(startDate,'eeee MMMM do yyyy')}</p>
                                 <p>
                                     Hosted by <strong>Jan Czarina</strong>
                                 </p>
