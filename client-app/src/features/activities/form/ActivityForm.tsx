@@ -1,6 +1,6 @@
 import React, {useState, FormEvent, useContext, useEffect} from 'react'
 import { Segment, Form, Button, Grid, FormGroup } from 'semantic-ui-react'
-import { IActivityFormValues } from '../../../app/models/activity'
+import { IActivityFormValues, ActivityFormValues } from '../../../app/models/activity'
 import {v4 as uuid} from 'uuid'
 import ActivityStore from '../../../app/stores/activityStore'
 import { observer } from 'mobx-react-lite'
@@ -29,58 +29,27 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         activity: initialFormState
     } = activityStore
 
-    const [activity, setActivity] = useState<IActivityFormValues>({
-        id: undefined,
-        title: '',
-        category: '',
-        description: '',
-        startDate: undefined,
-        endDate: undefined,
-        startTime: undefined,
-        endTime: undefined,
-        city: '',
-        venue: ''
-    })
+    const [activity, setActivity] = useState<IActivityFormValues>(new ActivityFormValues())
 
     useEffect(() => {
         const {activityId} = match.params
-        if(activityId && activity.id) {
+        if(activityId) {
             loadActivity(activityId).then(
-                () => initialFormState && setActivity(initialFormState)
+                (activity) => {
+                    console.log('loaded activity', activity)
+                    setActivity(new ActivityFormValues(activity))
+                }
             )
-        }
-        return () => {
-            clearActivity()
         }
     }, [
         loadActivity,
-        clearActivity,
-        match.params,
-        initialFormState,
-        activity.id
+        match.params
     ])
-
-    // const handleSubmmit = () => {
-    //     if (activity.id.length === 0) {
-    //         let newActivity = {
-    //             ...activity,
-    //             id: uuid()
-    //         }
-    //         createActivity(newActivity).then(() => {
-    //             history.push(`/activities/${newActivity.id}`)
-    //         })
-    //     }
-    //     else {
-    //         editActivity(activity).then(() => {
-    //             history.push(`/activities/${activity.id}`)
-    //         })
-    //     }
-    // }
 
     const handleFinalFormSubmit = (values: any) => {
         const startDateAndTime = combineDateAndTime(values.startDate, values.startTime)
         const endDateAndTime = combineDateAndTime(values.endDate, values.endTime)
-        const {startDate, startTime, ...activity} = values
+        const {startDate, startTime, endDate, endTime, ...activity} = values
         activity.startDate = startDateAndTime
         activity.endDate = endDateAndTime
         console.log(activity)
@@ -96,6 +65,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
             <Grid.Column width={10}>
                 <Segment clearing>
                     <FinalForm
+                        initialValues={activity}
                         onSubmit={handleFinalFormSubmit}
                         render={({handleSubmit}) => (
                             <Form onSubmit={handleSubmit}>
