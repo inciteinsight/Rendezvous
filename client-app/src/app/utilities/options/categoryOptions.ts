@@ -1,9 +1,10 @@
 export const categoryOptions = [
-    { key: 'culture', text: 'Culture', value: 'culture'},
-    { key: 'film', text: 'Film', value: 'film'},
-    { key: 'food', text: 'Food', value: 'food'},
-    { key: 'music', text: 'Music', value: 'music'},
-    { key: 'social', text: 'Social', value: 'social'},
-    { key: 'sports', text: 'Sports', value: 'sports'},
-    { key: 'travel', text: 'Travel', value: 'travel'}
+    { key: 'Culture', text: 'Culture', value: 'Culture'},
+    { key: 'Film', text: 'Film', value: 'Film'},
+    { key: 'Food', text: 'Food', value: 'Food'},
+    { key: 'Formal', text: 'Formal', value: 'Formal'},
+    { key: 'Music', text: 'Music', value: 'Music'},
+    { key: 'Social', text: 'Social', value: 'Social'},
+    { key: 'Sports', text: 'Sports', value: 'Sports'},
+    { key: 'Travel', text: 'Travel', value: 'Travel'}
 ]

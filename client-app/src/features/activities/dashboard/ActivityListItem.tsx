@@ -6,7 +6,7 @@ import { IActivity } from '../../../app/models/activity'
 import {format} from 'date-fns'
 
 const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
-    const { id, title, startDate, description, city, venue, category} = activity
+    const { activityId, title, startDate, description, city, venue, category} = activity
     return (
         <Segment.Group>
             <Segment>
@@ -34,7 +34,7 @@ const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
             <Segment clearing>
                 <span>{description}</span>
                 <Button
-                    as={Link} to={`/activities/${id}`} 
+                    as={Link} to={`/activities/${activityId}`} 
                     floated='right'
                     content='View'
                     color='blue' />

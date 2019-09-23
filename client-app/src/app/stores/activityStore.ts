@@ -2,6 +2,7 @@ import { observable, action, computed, configure, runInAction } from 'mobx';
 import { createContext, SyntheticEvent } from 'react';
 import { IActivity } from '../models/activity';
 import agent from '../api/agent';
+import { history } from '../..';
 
 configure({enforceActions: "always"})
 
@@ -59,7 +60,7 @@ class ActivityStore {
                     activities.forEach((activity) => {
                     activity.startDate = new Date(activity.startDate)
                     activity.endDate = new Date(activity.endDate)
-                    this.activityRegistry.set(activity.id, activity)
+                    this.activityRegistry.set(activity.activityId, activity)
                 })
                 this.loadingInitial = false
 
@@ -77,9 +78,10 @@ class ActivityStore {
         try {
             await agent.Activities.create(activity)
             runInAction('creating activity', () => {
-                this.activityRegistry.set(activity.id, activity)
+                this.activityRegistry.set(activity.activityId, activity)
                 this.submitting = false
             })
+            history.push(`/activities/${activity.activityId}`)
         }   catch (error) {
             runInAction('creating activity error', () => {
                 this.submitting = false
@@ -93,10 +95,11 @@ class ActivityStore {
         try {
             await agent.Activities.update(activity)
             runInAction('updating activity', () => {
-                this.activityRegistry.set(activity.id, activity)
+                this.activityRegistry.set(activity.activityId, activity)
                 this.activity = activity
                 this.submitting = false
             })
+            history.push(`/activities/${activity.activityId}`)
         }   catch (error) {
             runInAction('error updating activity', () => {
                 this.submitting = false

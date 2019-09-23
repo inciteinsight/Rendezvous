@@ -17,7 +17,7 @@ const ActivityList: React.FC = () => {
                     <Label  size='large' color='blue'>{group}</Label>
                     <Item.Group divided>
                         {activities.map(activity => {
-                            return <ActivityListItem  key={activity.id} activity={activity}/>
+                            return <ActivityListItem  key={activity.activityId} activity={activity}/>
                         })}
                     </Item.Group>
                 </Fragment>

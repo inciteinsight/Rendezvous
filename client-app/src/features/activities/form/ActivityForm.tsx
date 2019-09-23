@@ -1,8 +1,8 @@
 import React, {useState, FormEvent, useContext, useEffect} from 'react'
 import { Segment, Form, Button, Grid, FormGroup } from 'semantic-ui-react'
 import { IActivityFormValues, ActivityFormValues } from '../../../app/models/activity'
-import {v4 as uuid} from 'uuid'
 import ActivityStore from '../../../app/stores/activityStore'
+import {v4 as uuid} from 'uuid'
 import { observer } from 'mobx-react-lite'
 import { RouteComponentProps } from 'react-router'
 import {Form as FinalForm, Field} from 'react-final-form'
@@ -25,21 +25,21 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         editActivity,
         submitting,
         loadActivity,
-        clearActivity,
         activity: initialFormState
     } = activityStore
 
     const [activity, setActivity] = useState<IActivityFormValues>(new ActivityFormValues())
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const {activityId} = match.params
         if(activityId) {
+            setLoading(true)
             loadActivity(activityId).then(
                 (activity) => {
-                    console.log('loaded activity', activity)
                     setActivity(new ActivityFormValues(activity))
                 }
-            )
+            ).finally(() => setLoading(false))
         }
     }, [
         loadActivity,
@@ -52,7 +52,19 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         const {startDate, startTime, endDate, endTime, ...activity} = values
         activity.startDate = startDateAndTime
         activity.endDate = endDateAndTime
+
         console.log(activity)
+
+        if (activity.activityId) {
+            let newActivity = {
+                ...activity,
+                activityId: uuid()
+            }
+            createActivity(newActivity)
+        }
+        else {
+            editActivity(activity)
+        }
     }
 
     const handleChange = (evt: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -68,7 +80,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                         initialValues={activity}
                         onSubmit={handleFinalFormSubmit}
                         render={({handleSubmit}) => (
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={handleSubmit} loading={loading}>
                                 <Field
                                     name='title'
                                     placeholder='Title'
@@ -91,7 +103,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                         name='startDate'
                                         date={true}
                                         placeholder='Start Day'
-                                        value={startDate}
+                                        value={startDate!}
                                         component={DateInput}/>
                                     <Field
                                         name='startTime'
@@ -105,7 +117,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                         name='endDate'
                                         date={true}
                                         placeholder='End Day'
-                                        value={endDate}
+                                        value={endDate!}
                                         component={DateInput}/>
                                     <Field
                                         name='endTime'
@@ -126,6 +138,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                     component={TextInput}/>
                                 <Button
                                     loading={submitting}
+                                    disabled={loading}
                                     floated='right'
                                     positive type='submit'
                                     content='Submit'/>
@@ -133,7 +146,8 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                     floated='right'
                                     type='button'
                                     content='Cancel'
-                                    onClick={() => history.push('/activities')}/>
+                                    onClick={() => history.push('/activities')}
+                                    disabled={loading}/>
                             </Form>
                         )
                     } />

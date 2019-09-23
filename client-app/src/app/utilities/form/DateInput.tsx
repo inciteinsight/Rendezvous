@@ -15,11 +15,14 @@ const DateInput: React.FC<IProps> = ({
     time = false,
     meta: {touched, error}},
     ...rest) => {
+    if(!input.value) {
+        input.value = new Date(Date.now())
+    }
     return (
         <Form.Field error={touched && !!error} width={width}>
             <DateTimePicker
                 placeholder={placeholder}
-                value={new Date(input.value) || null}
+                value={new Date(input.value)}
                 onChange={input.onChange}
                 date={date}
                 time={time}

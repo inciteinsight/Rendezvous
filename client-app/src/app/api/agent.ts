@@ -19,6 +19,7 @@ axios.interceptors.response.use(undefined, error => {
     if(status === 500) {
         toast.error('Server Error')
     }
+    throw error
 })
 
 const responseBody = (response: AxiosResponse) => response.data
@@ -34,7 +35,7 @@ const Activities = {
     list: (): Promise<IActivity[]> => requests.get('/activities'),
     details: (id: string) => requests.get(`/activities/${id}`),
     create: (activity: IActivity) => requests.post('/activities', activity),
-    update: (activity: IActivity) => requests.put(`/activities/${activity.id}`, activity),
+    update: (activity: IActivity) => requests.put(`/activities/${activity.activityId}`, activity),
     delete: (id: string) => requests.delete(`/activities/${id}`)
 }
 
