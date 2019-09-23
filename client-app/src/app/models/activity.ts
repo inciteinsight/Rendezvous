@@ -1,5 +1,5 @@
 export interface IActivity {
-    activityId: string
+    id: string
     title: string
     description: string
     category: string
@@ -15,7 +15,7 @@ export interface IActivityFormValues extends Partial<IActivity> {
 }
 
 export class ActivityFormValues implements IActivityFormValues {
-    activityId?: string = undefined
+    id?: string = undefined
     title: string = ''
     category: string = ''
     description: string = ''

@@ -3,6 +3,7 @@ import { createContext, SyntheticEvent } from 'react';
 import { IActivity } from '../models/activity';
 import agent from '../api/agent';
 import { history } from '../..';
+import { toast } from 'react-toastify';
 
 configure({enforceActions: "always"})
 
@@ -40,6 +41,7 @@ class ActivityStore {
                 activity = await agent.Activities.details(id)
                 runInAction('loading activity', () => {
                     this.activity = activity
+                    this.activityRegistry.set(activity.id, activity)
                     this.loadingInitial = false
                 })
                 return activity
@@ -60,7 +62,7 @@ class ActivityStore {
                     activities.forEach((activity) => {
                     activity.startDate = new Date(activity.startDate)
                     activity.endDate = new Date(activity.endDate)
-                    this.activityRegistry.set(activity.activityId, activity)
+                    this.activityRegistry.set(activity.id, activity)
                 })
                 this.loadingInitial = false
 
@@ -78,14 +80,15 @@ class ActivityStore {
         try {
             await agent.Activities.create(activity)
             runInAction('creating activity', () => {
-                this.activityRegistry.set(activity.activityId, activity)
+                this.activityRegistry.set(activity.id, activity)
                 this.submitting = false
             })
-            history.push(`/activities/${activity.activityId}`)
+            history.push(`/activities/${activity.id}`)
         }   catch (error) {
             runInAction('creating activity error', () => {
                 this.submitting = false
             })
+            toast.error('Problem submitting data')
             console.error(error)
         }
     }
@@ -95,15 +98,16 @@ class ActivityStore {
         try {
             await agent.Activities.update(activity)
             runInAction('updating activity', () => {
-                this.activityRegistry.set(activity.activityId, activity)
+                this.activityRegistry.set(activity.id, activity)
                 this.activity = activity
                 this.submitting = false
             })
-            history.push(`/activities/${activity.activityId}`)
+            history.push(`/activities/${activity.id}`)
         }   catch (error) {
             runInAction('error updating activity', () => {
                 this.submitting = false
             })
+            toast.error('Problem submitting data')
             console.error(error)
         }        
     }

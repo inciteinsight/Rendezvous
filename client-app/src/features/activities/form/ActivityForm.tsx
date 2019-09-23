@@ -14,7 +14,7 @@ import DateInput from '../../../app/utilities/form/DateInput'
 import { combineDateAndTime } from '../../../app/utilities/tools/tool'
 
 interface DetailParams {
-    activityId: string
+    id: string
 }
 
 const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
@@ -32,10 +32,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        const {activityId} = match.params
-        if(activityId) {
+        const {id} = match.params
+        if(id) {
             setLoading(true)
-            loadActivity(activityId).then(
+            loadActivity(id).then(
                 (activity) => {
                     setActivity(new ActivityFormValues(activity))
                 }
@@ -53,12 +53,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         activity.startDate = startDateAndTime
         activity.endDate = endDateAndTime
 
-        console.log(activity)
-
-        if (activity.activityId) {
+        if (!activity.id) {
             let newActivity = {
                 ...activity,
-                activityId: uuid()
+                id: uuid()
             }
             createActivity(newActivity)
         }
@@ -71,7 +69,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         setActivity({...activity, [evt.currentTarget.name]: evt.currentTarget.value})
     }
 
-    let {title, description, category, startDate, endDate, city, venue} = activity
+    let {id, title, description, category, startDate, endDate, city, venue} = activity
     return (
         <Grid>
             <Grid.Column width={10}>
@@ -146,7 +144,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                     floated='right'
                                     type='button'
                                     content='Cancel'
-                                    onClick={() => history.push('/activities')}
+                                    onClick={id ?
+                                        () => history.push(`/activities/${id}`) :
+                                        () => history.push('/activities')
+                                    }
                                     disabled={loading}/>
                             </Form>
                         )

@@ -10,7 +10,7 @@ import ActivityDetailedChat from './ActivityDetailedChat'
 import ActivityDetailedSidebar from './ActivityDetailedSidebar'
 
 interface DetailParams {
-    activityId: string
+    id: string
 }
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
@@ -22,8 +22,8 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, hi
     } = activityStore
 
     useEffect(() => {
-        loadActivity(match.params.activityId)
-    }, [loadActivity, match.params.activityId, history])
+        loadActivity(match.params.id)
+    }, [loadActivity, match.params.id, history])
 
     
     if(loadingInitial || !activity) {

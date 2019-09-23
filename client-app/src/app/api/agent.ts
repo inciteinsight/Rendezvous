@@ -13,7 +13,7 @@ axios.interceptors.response.use(undefined, error => {
     if(status === 404) {
         history.push('/notfound')
     } 
-    if(status === 400 && config.method === 'get' && data.errors.hasOwnProperty('activityId')) {
+    if(status === 400 && config.method === 'get' && data.errors.hasOwnProperty('id')) {
         history.push('/notfound')
     }
     if(status === 500) {
@@ -35,7 +35,7 @@ const Activities = {
     list: (): Promise<IActivity[]> => requests.get('/activities'),
     details: (id: string) => requests.get(`/activities/${id}`),
     create: (activity: IActivity) => requests.post('/activities', activity),
-    update: (activity: IActivity) => requests.put(`/activities/${activity.activityId}`, activity),
+    update: (activity: IActivity) => requests.put(`/activities/${activity.id}`, activity),
     delete: (id: string) => requests.delete(`/activities/${id}`)
 }
 

@@ -22,10 +22,10 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
         <Container style={{marginTop: '5em'}}>
           <Switch>
             <Route exact path='/activities' component={ActivityDashboard}/>
-            <Route exact path='/activities/:activityId' component={ActivityDetails}/>
+            <Route exact path='/activities/:id' component={ActivityDetails}/>
             <Route
               key={location.key}
-              path={['/createActivity', '/manage/:activityId']}
+              path={['/createActivity', '/manage/:id']}
               component={ActivityForm} />
             <Route component={NotFound}/>
           </Switch>

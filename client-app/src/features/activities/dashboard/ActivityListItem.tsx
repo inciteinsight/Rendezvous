@@ -3,10 +3,10 @@ import { Item, Button, Segment, Icon } from 'semantic-ui-react'
 import { observer } from 'mobx-react-lite'
 import { Link } from 'react-router-dom'
 import { IActivity } from '../../../app/models/activity'
-import {format} from 'date-fns'
+import {formatToTimeZone} from 'date-fns-timezone'
 
 const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
-    const { activityId, title, startDate, description, city, venue, category} = activity
+    const { id, title, startDate, description, city, venue, category} = activity
     return (
         <Segment.Group>
             <Segment>
@@ -23,7 +23,7 @@ const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
                 </Item.Group>
             </Segment>
             <Segment>
-                <Icon name='hourglass start' /> {format(startDate,'h:mm a')}
+                <Icon name='hourglass start' /> {formatToTimeZone(startDate, 'h:mm a', { timeZone: 'America/New_York' })}
                 {/* <Icon name='hourglass end' /> {endDate} */}
                 <Icon name='marker' /> {venue}, {city}
                 <Icon name='users' /> {category}
@@ -34,7 +34,7 @@ const ActivityListItem: React.FC<{activity: IActivity}> = ({activity}) => {
             <Segment clearing>
                 <span>{description}</span>
                 <Button
-                    as={Link} to={`/activities/${activityId}`} 
+                    as={Link} to={`/activities/${id}`} 
                     floated='right'
                     content='View'
                     color='blue' />

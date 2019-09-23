@@ -19,7 +19,7 @@ const activityImageTextStyle = {
 }
 
 const ActivityDetailedHeader: React.FC<{activity: IActivity}> = ({activity}) => {
-    const {activityId, title, startDate, category} = activity!
+    const {id, title, startDate, category} = activity!
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: 0}}>
@@ -45,7 +45,7 @@ const ActivityDetailedHeader: React.FC<{activity: IActivity}> = ({activity}) => 
                 <Button color='teal'>Join Activity</Button>
                 <Button>Cancel Attendance</Button>
                 <Button
-                    as={Link} to={`/manage/${activityId}`}
+                    as={Link} to={`/manage/${id}`}
                     color='orange'
                     floated='right'> Manage Event
                     </Button>
