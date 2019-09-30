@@ -1,4 +1,4 @@
-import React, {useState, FormEvent, useContext, useEffect} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import { Segment, Form, Button, Grid, FormGroup } from 'semantic-ui-react'
 import { IActivityFormValues, ActivityFormValues } from '../../../app/models/activity'
 import ActivityStore from '../../../app/stores/activityStore'
@@ -25,7 +25,6 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         editActivity,
         submitting,
         loadActivity,
-        activity: initialFormState
     } = activityStore
 
     const [activity, setActivity] = useState<IActivityFormValues>(new ActivityFormValues())
@@ -63,10 +62,6 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
         else {
             editActivity(activity)
         }
-    }
-
-    const handleChange = (evt: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setActivity({...activity, [evt.currentTarget.name]: evt.currentTarget.value})
     }
 
     let {id, title, description, category, startDate, endDate, city, venue} = activity
