@@ -9,7 +9,7 @@ import {Form as FinalForm, Field} from 'react-final-form'
 import TextInput from '../../../app/utilities/form/TextInput'
 import TextAreaInput from '../../../app/utilities/form/TextAreaInput'
 import SelectInput from '../../../app/utilities/form/SelectInput'
-import {categoryOptions} from '../../../app/utilities/options/categoryOptions'
+import { categoryOptions } from '../../../app/utilities/options/categoryOptions'
 import DateInput from '../../../app/utilities/form/DateInput'
 import { combineDateAndTime } from '../../../app/utilities/tools/tool'
 
