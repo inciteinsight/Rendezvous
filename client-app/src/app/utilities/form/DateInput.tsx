@@ -24,6 +24,8 @@ const DateInput: React.FC<IProps> = ({
                 placeholder={placeholder}
                 value={new Date(input.value)}
                 onChange={input.onChange}
+                onBlur={input.onBlur}
+                onKeyDown={(e) => e.preventDefault}
                 date={date}
                 time={time}
                 {...rest}/>

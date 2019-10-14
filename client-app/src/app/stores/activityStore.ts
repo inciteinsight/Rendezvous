@@ -139,5 +139,3 @@ export default class ActivityStore {
         }
     }
 }
-
-// export default createContext(new ActivityStore())

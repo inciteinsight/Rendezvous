@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react'
 import { Segment, Form, Button, Grid, FormGroup } from 'semantic-ui-react'
 import { IActivityFormValues, ActivityFormValues } from '../../../app/models/activity'
-import {v4 as uuid} from 'uuid'
+import { v4 as uuid } from 'uuid'
 import { observer } from 'mobx-react-lite'
 import { RouteComponentProps } from 'react-router'
 import {Form as FinalForm, Field} from 'react-final-form'
@@ -12,6 +12,22 @@ import { categoryOptions } from '../../../app/utilities/options/categoryOptions'
 import DateInput from '../../../app/utilities/form/DateInput'
 import { combineDateAndTime } from '../../../app/utilities/tools/tool'
 import { RootStoreContext } from '../../../app/stores/rootStore'
+import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate'
+
+const validate = combineValidators({
+    title: isRequired({message: 'The event title is required'}),
+    category: isRequired('Category'),
+    description: composeValidators(
+        isRequired('Description'),
+        hasLengthGreaterThan(4)({message: 'Description needs to be at least 5 characters'})
+    )(),
+    city: isRequired('City'),
+    venue: isRequired('Venue'),
+    startDate: isRequired('StartDate'),
+    startTime: isRequired('StartTime'),
+    endDate: isRequired('EndDate'),
+    endTime: isRequired('EndTime')
+})
 
 interface DetailParams {
     id: string
@@ -70,9 +86,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
             <Grid.Column width={10}>
                 <Segment clearing>
                     <FinalForm
+                    validate={validate}
                         initialValues={activity}
                         onSubmit={handleFinalFormSubmit}
-                        render={({handleSubmit}) => (
+                        render={({handleSubmit, invalid, pristine}) => (
                             <Form onSubmit={handleSubmit} loading={loading}>
                                 <Field
                                     name='title'
@@ -131,7 +148,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
                                     component={TextInput}/>
                                 <Button
                                     loading={submitting}
-                                    disabled={loading}
+                                    disabled={loading || invalid || pristine}
                                     floated='right'
                                     positive type='submit'
                                     content='Submit'/>
