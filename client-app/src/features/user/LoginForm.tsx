@@ -5,9 +5,12 @@ import TextInput from '../../app/utilities/form/TextInput'
 import { RootStoreContext } from '../../app/stores/rootStore'
 import { IUserFormValues } from '../../app/models/user'
 import { FORM_ERROR } from 'final-form'
-// import {combineValidators} from 'revalidate'
+import {combineValidators, isRequired} from 'revalidate'
 
-// const validate = combineValidators
+const validate = combineValidators({
+    email: isRequired('email'),
+    password: isRequired('password')
+})
 
 const LoginForm = () => {
     const rootStore = useContext(RootStoreContext)
@@ -17,13 +20,14 @@ const LoginForm = () => {
             onSubmit={(values: IUserFormValues) => login(values).catch(error => ({
                 [FORM_ERROR]: error
             }))}
-            render={({handleSubmit, submitting, form, submitError}) => (
+            validate={validate}
+            render={({handleSubmit, submitting, submitError, invalid, pristine, dirtySinceLastSubmit}) => (
                 <Form onSubmit={handleSubmit}>
                     <Field name='email' component={TextInput} placeholder='Email'/>
                     <Field name='password' component={TextInput} placeholder='Password' type='password'/>
-                    <Button positive loading={submitting} content='Login'/>
+                    <Button positive loading={submitting} content='Login' disabled={invalid && !dirtySinceLastSubmit || pristine}/>
                     <br/>
-                    {submitError && 
+                    {submitError && !dirtySinceLastSubmit &&
                     <Label color='red' basic content={submitError.statusText} />}
                 </Form>
             )}
