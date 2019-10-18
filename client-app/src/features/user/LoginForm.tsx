@@ -32,7 +32,7 @@ const LoginForm = () => {
                 <Form onSubmit={handleSubmit}>
                     <Field name='email' component={TextInput} placeholder='Email'/>
                     <Field name='password' component={TextInput} placeholder='Password' type='password'/>
-                    <Button positive loading={submitting} content='Login' disabled={invalid && !dirtySinceLastSubmit || pristine}/>
+                    <Button positive loading={submitting} content='Login' disabled={(invalid && !dirtySinceLastSubmit) || pristine}/>
                     <br/>
                     {submitError && !dirtySinceLastSubmit &&
                     <Label color='red' basic content={submitError.statusText} />}
