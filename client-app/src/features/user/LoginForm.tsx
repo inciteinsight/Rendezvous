@@ -21,7 +21,14 @@ const LoginForm = () => {
                 [FORM_ERROR]: error
             }))}
             validate={validate}
-            render={({handleSubmit, submitting, submitError, invalid, pristine, dirtySinceLastSubmit}) => (
+            render={({
+                handleSubmit,
+                submitting,
+                submitError,
+                invalid,
+                pristine,
+                dirtySinceLastSubmit
+            }) => (
                 <Form onSubmit={handleSubmit}>
                     <Field name='email' component={TextInput} placeholder='Email'/>
                     <Field name='password' component={TextInput} placeholder='Password' type='password'/>
