@@ -11,11 +11,11 @@ export default class UserStore {
         this.rootStore = rootStore
     }
     @observable user: IUser | null = null
-
+    
     @computed get isLoggedIn() {
         return !!this.user
     }
-
+    
     @action login = async (values: IUserFormValues) => {
         try {
             const user = await agent.User.login(values)
@@ -23,6 +23,7 @@ export default class UserStore {
                 this.user = user
             })
             this.rootStore.commonStore.setToken(user.token)
+            this.rootStore.modalStore.closeModal()
             history.push('/activities')
         } catch (error) {
             throw error
@@ -43,6 +44,17 @@ export default class UserStore {
             })
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    @action register = async (values: IUserFormValues) => {
+        try {
+            const user = await agent.User.register(values)
+            this.rootStore.commonStore.setToken(user.token)
+            this.rootStore.modalStore.closeModal()
+            history.push('/activities')
+        } catch (error) {
+            throw error
         }
     }
 }

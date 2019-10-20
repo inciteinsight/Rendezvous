@@ -12,6 +12,7 @@ import {ToastContainer} from 'react-toastify'
 import LoginForm from '../../features/user/LoginForm';
 import { RootStoreContext } from '../stores/rootStore';
 import Loading from './Loading';
+import ModalContainer from '../utilities/modals/ModalContainer';
 
 const App: React.FC<RouteComponentProps> = ({location}) => {
   const rootStore = useContext(RootStoreContext)
@@ -24,7 +25,6 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
     } else {
       setAppLoaded()
     }
-
   }, [getUser, setAppLoaded, token])
 
   if (!appLoaded) {
@@ -33,6 +33,7 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
 
   return (
     <Fragment>
+      <ModalContainer />
       <ToastContainer position='bottom-right' />
       <Route exact path='/' component={HomePage}/>
       <Route path={'/(.+)'} render={() => (
