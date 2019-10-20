@@ -22,10 +22,27 @@ export default class UserStore {
             runInAction(() => {
                 this.user = user
             })
-            console.log(user)
+            this.rootStore.commonStore.setToken(user.token)
             history.push('/activities')
         } catch (error) {
             throw error
+        }
+    }
+
+    @action logout = () => {
+        this.rootStore.commonStore.setToken(null)
+        this.user = null
+        history.push('/')
+    }
+
+    @action getUser = async () => {
+        try {
+            const user = await agent.User.currentUser()
+            runInAction(() => {
+                this.user = user
+            })
+        } catch (error) {
+            console.log(error)
         }
     }
 }
