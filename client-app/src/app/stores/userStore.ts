@@ -22,6 +22,7 @@ export default class UserStore {
             runInAction(() => {
                 this.user = user
             })
+            console.log(user)
             history.push('/activities')
         } catch (error) {
             throw error
