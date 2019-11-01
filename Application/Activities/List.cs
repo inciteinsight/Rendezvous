@@ -24,7 +24,10 @@ namespace Application.Activities
             }
             public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
             {
-                List<Activity> activities = await _context.Activities.ToListAsync();
+                List<Activity> activities = await _context.Activities
+                    .Include(x => x.UserActivities)
+                    .ThenInclude(x => x.AppUser)
+                    .ToListAsync();
                 return activities;
             }
         }

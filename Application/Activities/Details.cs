@@ -6,6 +6,7 @@ using MediatR;
 using Domain;
 using Persistence;
 using Application.Errors;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Activities
 {
@@ -25,7 +26,10 @@ namespace Application.Activities
             }
             public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
             {
-                Activity activity = await _context.Activities.FindAsync(request.Id);
+                Activity activity = await _context.Activities
+                    .Include(x => x.UserActivities)
+                    .ThenInclude(x => x.AppUser)
+                    .SingleOrDefaultAsync(x => x.Id == request.Id);
 
                 if (activity == null)
                 {
