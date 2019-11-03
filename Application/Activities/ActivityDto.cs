@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Application.Activities
 {
@@ -13,6 +14,8 @@ namespace Application.Activities
         public DateTime EndDate { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
+        
+        [JsonProperty("attendees")]
         public ICollection<AttendeeDto> Attendees { get; set; }
     }
 }
