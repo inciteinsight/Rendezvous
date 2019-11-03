@@ -18,6 +18,7 @@ using Persistence;
 using MediatR;
 using FluentValidation.AspNetCore;
 using API.Middleware;
+using AutoMapper;
 // using System;
 // using System.Collections.Generic;
 // using System.Linq;
@@ -52,6 +53,7 @@ namespace API
                 });
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddAutoMapper(typeof(List.Handler));
             services.AddMvc(opt => {
                 var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser().Build();
